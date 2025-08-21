@@ -98,6 +98,33 @@ Finally, install OpenCV, which is required for image and video processing.
 ```bash
 pip install opencv-python
 ```
+---
+
+## 5. 테스트 코드 실행 / Running Test Code
+
+설치가 완료되면 아래의 Python 코드를 `test_load.py`와 같은 파일로 저장한 후 실행하여, 모델이 정상적으로 로드되는지 확인할 수 있습니다.
+
+Once the installation is complete, you can save the following Python code into a file (e.g., `test_load.py`) and run it to verify that the model loads correctly.
+
+```python
+from transformers import AutoModelForVision2Seq, AutoProcessor
+from PIL import Image
+import torch
+
+import cv2
+import numpy as np
+
+print("Loading model and processor...")
+processor = AutoProcessor.from_pretrained("openvla/openvla-7b", trust_remote_code=True)
+vla = AutoModelForVision2Seq.from_pretrained(
+    "openvla/openvla-7b",
+    # attn_implementation="flash_attention_2", # If flash-attn is not installed, comment this out.
+    torch_dtype=torch.bfloat16,
+    low_cpu_mem_usage=True,
+    trust_remote_code=True
+).to("cuda:0")
+print("Model loaded successfully!")
+```
 
 ---
 
